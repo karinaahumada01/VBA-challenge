@@ -1,0 +1,113 @@
+Sub AlphabeticalTest()
+ 
+    Dim Ticker As String
+    Dim OpenPrice As Double
+    Dim ClosePrice As Double
+    Dim Quarters As Worksheet
+    Dim TotalStockVolume As Double
+    Dim QuarterlyChange As Double
+    Dim PercentChange As Double
+    Dim GreatestIncrease As Double
+    Dim GreatestDecrease As Double
+    Dim GreatestVolume As Double
+    Dim GreatestIncreaseTicker As String
+    Dim GreatestDecreaseTicker As String
+    Dim GreatestVolumeTicker As String
+    Dim StartRow As Long
+    Dim LastRow As Long
+    Dim EndRow As Long
+    Dim TickerRow As Long
+    Dim x As Long
+ 
+'Make sure it works for each sheet in this workbook
+ 
+For Each Quarters In ThisWorkbook.Worksheets
+    Quarters.Activate
+ 
+    Quarters.Cells(1, 9).Value = "Ticker"
+    Quarters.Cells(1, 10).Value = "Quarterly Change"
+    Quarters.Cells(1, 11).Value = "Percent Change"
+    Quarters.Cells(1, 12).Value = "Total Stock Volume"
+    Quarters.Cells(1, 17).Value = "Ticker"
+    Quarters.Cells(1, 18).Value = "Value"
+    Quarters.Cells(2, 16).Value = "Greatest % Increase"
+    Quarters.Cells(3, 16).Value = "Greatest % Decrease"
+    Quarters.Cells(4, 16).Value = "Greatest % Total Volume"
+ 
+    LastRow = Quarters.Cells(Quarters.Rows.Count, 1).End(xlUp).Row
+ 
+        TickerRow = 2
+        StartRow = 2
+        GreatestIncrease = 0
+        GreatestDecrease = 0
+        GreatestVolume = 0
+        TotalStockVolume = 0
+        OpenPrice = Quarters.Cells(StartRow, 3).Value
+ 
+    For x = 2 To LastRow
+ 
+            TotalStockVolume = TotalStockVolume + Quarters.Cells(x, 7).Value
+ 
+            'Search for the last row of data
+ 
+            If Quarters.Cells(x + 1, 1).Value <> Quarters.Cells(x, 1).Value Or x = LastRow Then
+ 
+                EndRow = x
+                ClosePrice = Quarters.Cells(EndRow, 6).Value
+                Ticker = Quarters.Cells(x, 1).Value
+ 
+                Quarters.Cells(TickerRow, 9).Value = Ticker
+                Quarters.Cells(TickerRow, 12).Value = TotalStockVolume
+ 
+                QuarterlyChange = ClosePrice - OpenPrice
+                Quarters.Cells(TickerRow, 10).Value = QuarterlyChange
+                PercentChange = (QuarterlyChange / OpenPrice)
+                Quarters.Cells(TickerRow, 11).Value = PercentChange
+                TickerRow = TickerRow + 1
+ 
+                If PercentChange > GreatestIncrease Then
+ 
+                    GreatestIncrease = PercentChange
+                    GreatestIncreaseTicker = Ticker
+                    Quarters.Cells(2, 17).Value = GreatestIncreaseTicker
+                    Quarters.Cells(2, 18).Value = GreatestIncrease
+ 
+                End If
+ 
+                If PercentChange < GreatestDecrease Then
+ 
+                    GreatestIncrease = PercentChange
+                    GreatestIncreaseTicker = Ticker
+                    Quarters.Cells(3, 17).Value = GreatestDecreaseTicker
+                    Quarters.Cells(3, 18).Value = GreatestDecrease
+ 
+                End If
+ 
+                If TotalStockVolume > GreatestVolume Then
+ 
+                    GreatestVolume = TotalStockVolume
+                    GreatestVolumeTicker = Ticker
+                    Quarters.Cells(4, 17).Value = GreatestVolumeTicker
+                    Quarters.Cells(4, 18).Value = GreatestVolume
+ 
+                End If
+ 
+ 
+                        Quarters.Columns("K").NumberFormat = "0.00%"
+                        Quarters.Columns("R").NumberFormat = "0.00%"
+                        Quarters.Cells(4, 18).NumberFormat = "0.00e+00"
+ 
+                        OpenPrice = Quarters.Cells(x + 1, 3).Value
+                        TotalStockVolume = 0
+ 
+            Else
+ 
+                TotalStockVolume = TotalStockVolume + quarter.Cells(x, 7).Value
+            End If
+ 
+        Next x
+ 
+    Next Quarters
+ 
+End Sub
+ 
