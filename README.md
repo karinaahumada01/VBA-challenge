@@ -30,7 +30,7 @@ The script contains error handling to help with any unexpected problems that may
 
 # Notes/References 
 
-1. ~Error code for troubleshooting~
+1. Error code for troubleshooting
 
 "  On Error GoTo ErrorHandler
 
@@ -48,7 +48,7 @@ End Sub"
 
 Logan, F., (2024, July 31). Tutoring Zoom Session, Ln 2, 129-138. 
 
-2. ~For loop troubleshooting/typo fix~
+2. For loop troubleshooting/typo fix
 
 "                ElseIf .Cells(x + 1, 1).Value <> .Cells(x, 1).Value Then
                     EndRow = x
